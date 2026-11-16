@@ -1,0 +1,70 @@
+.section {
+  padding: 48px 0;
+  background: #f7f8fa;
+}
+
+/* The shared heading fails open; its wrapper owns entrance motion. */
+.section :global(.section-heading-reveal) {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none;
+}
+
+.grid {
+  display: grid;
+  margin-top: 32px;
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgb(15 23 42 / 0.12);
+}
+
+.number {
+  padding-top: 4px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c2410c;
+}
+
+.title {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #0f172a;
+}
+
+.description {
+  margin-top: 6px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+@media (min-width: 768px) {
+  .section { padding: 64px 0; }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(5, auto);
+    grid-auto-flow: column;
+    column-gap: 48px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .title, .number { transition: color 150ms ease; }
+  .item:hover .title, .item:hover .number { color: #9a3412; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title, .number { transition: none; }
+}

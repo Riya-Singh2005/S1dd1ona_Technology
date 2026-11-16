@@ -1,0 +1,84 @@
+.stage {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 520 / 440;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.scene { position: relative; width: 100%; height: 100%; isolation: isolate; }
+.floor {
+  position: absolute;
+  left: 12%; right: 12%; bottom: 8%; height: 5%;
+  border-radius: 50%;
+  border: 1px solid rgb(251 146 60 / 0.45);
+  background: radial-gradient(ellipse, rgb(0 0 0 / 0.65), rgb(234 88 12 / 0.18) 48%, transparent 72%);
+  box-shadow: 0 5px 12px rgb(0 0 0 / 0.4);
+}
+.floor::after {
+  content: "";
+  position: absolute;
+  left: -5%; right: -5%; top: 25%; height: 280%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 28% 15%, rgb(61 156 222 / 0.28), transparent 35%),
+    radial-gradient(ellipse at 50% 5%, rgb(249 115 22 / 0.4), transparent 45%),
+    radial-gradient(ellipse at 75% 15%, rgb(61 156 222 / 0.2), transparent 35%);
+  filter: blur(9px);
+}
+.plane {
+  position: absolute;
+  width: 68%; aspect-ratio: 1;
+  left: 16%; top: 13%;
+  transform-style: preserve-3d;
+}
+.planeOne { transform: perspective(800px) rotateZ(-28deg) rotateX(58deg); }
+.planeTwo { transform: perspective(800px) rotateZ(46deg) rotateX(62deg); }
+.planeThree { transform: perspective(800px) rotateZ(104deg) rotateX(51deg); }
+.ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 5px solid #28628d;
+  border-top-color: #8fd6ff;
+  border-bottom-color: #f59a50;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgb(144 208 245 / 0.2), 0 2px 0 #0a1b2c, 0 5px 0 #10253a;
+  animation: orbit 28s linear infinite;
+  animation-play-state: paused;
+}
+/* Transparent center preserves the stable core and other tilted ring layers. */
+@supports (mask-composite: exclude) {
+  .ring {
+    background: conic-gradient(from 20deg, #214c6d, #428cc0 12%, #c5edff 15%, #428cc0 18%, #183750 42%, #8a4d2c 60%, #fff0cc 65%, #fb923c 68%, #285d86 86%, #214c6d);
+    border: 0;
+    padding: 5px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
+}
+.planeTwo .ring { animation-duration: 32s; animation-direction: reverse; }
+.planeThree .ring { animation-duration: 35s; }
+.stage[data-running="true"] .ring { animation-play-state: running; }
+.core, .sphere {
+  border-radius: 50%;
+  border: 1px solid rgb(135 207 252 / 0.85);
+  background: radial-gradient(ellipse at 32% 10%, rgb(186 229 255 / 0.65), transparent 28%),
+    radial-gradient(ellipse at 72% 83%, rgb(249 115 22 / 0.36), transparent 36%), linear-gradient(145deg, #285677, #081522 55%, #18384d);
+  box-shadow: inset 0 3px 4px rgb(201 238 255 / 0.65), inset 0 -4px 5px rgb(251 146 60 / 0.85), 0 8px 18px rgb(0 0 0 / 0.4);
+}
+.core {
+  position: absolute; z-index: 2;
+  width: 31%; aspect-ratio: 1; left: 34.5%; top: 34%;
+  display: grid; place-items: center;
+}
+.emblem { width: 70%; height: auto; }
+.node { position: absolute; z-index: 3; width: 19%; text-align: center; }
+.sphere { aspect-ratio: 1; display: grid; place-items: center; }
+.sphere svg { width: 43%; height: 43%; stroke-width: 1.6; color: #f1f7fc; }
+.node span { display: block; margin-top: 10px; font-family: var(--font-jetbrains-mono), monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #cbd5e1; }
+.people { top: 3%; left: 40.5%; }
+.business { top: 57%; left: 8%; }
+.technology { top: 59%; right: 8%; }
+@keyframes orbit { to { transform: rotate(360deg); } }
+@media (min-width: 640px) { .stage { max-width: 380px; } .node span { font-size: 11px; } }
+@media (min-width: 1024px) { .stage { max-width: 440px; } }
+@media (prefers-reduced-motion: reduce) { .stage .ring { animation: none; } }

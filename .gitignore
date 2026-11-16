@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Build and test coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS and editor artifacts
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local agent configuration and secrets
+.claude/*.local.json
+.impeccable/*.local.json
+
+# Local AI/editor tool directories
+.claude/
+.codex/
+.cursor/
+.gemini/
+.kiro/
+
+.agents/
+.impeccable/
+.codex-qa/
+.codex-footer-qa/
+
+# Local TypeScript incremental state
+*.tsbuildinfo
+
+# Vercel local configuration
+.vercel/
+
+videos123/**
+
+# Next.js generated TypeScript declarations
+/next-env.d.ts
+
+# Per-round reports kept at the repo root; never commit them
+/*.docx
+
+# Local Supabase runtime and Studio files
+/supabase/.branches/
+/supabase/.temp/
+/supabase/snippets/
+# Cloudflare / OpenNext
+.open-next/
+.wrangler/
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+cloudflare-env.d.ts

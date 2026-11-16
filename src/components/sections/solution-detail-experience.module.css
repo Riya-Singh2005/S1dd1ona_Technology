@@ -1,0 +1,247 @@
+.heroLayout {
+  display: grid;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.heroCopy {
+  max-width: 48rem;
+}
+
+.heroVisual {
+  position: relative;
+  isolation: isolate;
+  width: min(82vw, 30rem);
+  margin-inline: auto;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0) scale(0.97);
+  animation: heroVisualEnter 700ms cubic-bezier(0.23, 1, 0.32, 1) 180ms forwards;
+}
+
+.heroVisual::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 12% 5% 4%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 58% 48%, rgb(34 211 238 / 18%), transparent 52%),
+    radial-gradient(circle at 78% 70%, rgb(234 88 12 / 9%), transparent 42%);
+  filter: blur(30px);
+}
+
+.heroVisual::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 15%;
+  right: 8%;
+  bottom: 1%;
+  height: 11%;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 38%);
+  filter: blur(17px);
+  transform: scaleX(0.84);
+}
+
+.heroVisualFloat {
+  animation: heroVisualFloat 7s cubic-bezier(0.77, 0, 0.175, 1) 880ms infinite alternate;
+  will-change: transform;
+}
+
+.heroVisualImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter:
+    drop-shadow(0 22px 24px rgb(0 0 0 / 34%))
+    drop-shadow(-5px 0 12px rgb(34 211 238 / 16%))
+    drop-shadow(4px 1px 9px rgb(234 88 12 / 9%));
+}
+
+.heroVisual[data-tone="warm"]::before {
+  background:
+    radial-gradient(circle at 56% 48%, rgb(251 146 60 / 15%), transparent 54%),
+    radial-gradient(circle at 45% 68%, rgb(255 255 255 / 7%), transparent 48%);
+}
+
+.heroVisual[data-tone="warm"] .heroVisualImage {
+  filter:
+    drop-shadow(0 22px 24px rgb(0 0 0 / 36%))
+    drop-shadow(-2px 0 10px rgb(255 255 255 / 7%))
+    drop-shadow(4px 1px 10px rgb(234 88 12 / 13%));
+}
+
+.heroVisual[data-treatment="scene"]::before {
+  inset: 7% 0 3%;
+  background:
+    radial-gradient(ellipse at 58% 48%, rgb(56 189 248 / 14%), transparent 58%),
+    radial-gradient(ellipse at 72% 66%, rgb(234 88 12 / 6%), transparent 46%);
+  filter: blur(24px);
+}
+
+.heroVisual[data-treatment="scene"]::after {
+  left: 10%;
+  right: 5%;
+  bottom: 4%;
+  height: 14%;
+  filter: blur(20px);
+}
+
+.heroVisual[data-treatment="scene"] .heroVisualFloat {
+  position: relative;
+}
+
+.heroVisual[data-treatment="scene"] .heroVisualFloat::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background: radial-gradient(ellipse 72% 72% at 56% 51%, transparent 42%, rgb(13 42 67 / 20%) 65%, rgb(13 42 67 / 92%) 100%);
+}
+
+.heroVisual[data-treatment="scene"] .heroVisualImage {
+  -webkit-mask-image: radial-gradient(ellipse 86% 82% at 56% 51%, #000 38%, rgb(0 0 0 / 94%) 55%, rgb(0 0 0 / 52%) 73%, transparent 100%);
+  mask-image: radial-gradient(ellipse 86% 82% at 56% 51%, #000 38%, rgb(0 0 0 / 94%) 55%, rgb(0 0 0 / 52%) 73%, transparent 100%);
+  filter:
+    brightness(0.91)
+    contrast(1.04)
+    saturate(0.92)
+    drop-shadow(0 22px 26px rgb(0 0 0 / 35%))
+    drop-shadow(-3px 0 12px rgb(56 189 248 / 10%));
+}
+
+@keyframes heroVisualEnter {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes heroVisualFloat {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+@media (min-width: 640px) {
+  .heroVisual {
+    width: min(68vw, 30rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroLayout {
+    grid-template-columns: minmax(0, 1.12fr) minmax(21rem, 0.88fr);
+    gap: 2rem;
+  }
+
+  .heroVisual {
+    justify-self: end;
+    width: min(40vw, 32.5rem);
+    margin-inline: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .heroLayout {
+    gap: 3rem;
+  }
+}
+
+.contextRow {
+  position: relative;
+  isolation: isolate;
+}
+
+.contextRow::before {
+  content: "";
+  position: absolute;
+  inset: 8px -12px;
+  z-index: -1;
+  border-radius: 16px;
+  background: #edf2f8;
+  opacity: 0;
+  transition: opacity 160ms ease;
+  pointer-events: none;
+}
+
+.contextIcon {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+}
+
+.contextRow[data-active="true"]::before {
+  opacity: 1;
+}
+
+.connector {
+  position: absolute;
+  left: 23px;
+  top: 76px;
+  bottom: -28px;
+  width: 2px;
+  background: #cbd5e1;
+  pointer-events: none;
+}
+
+.trace {
+  position: absolute;
+  inset: 0;
+  background: #ea580c;
+  transform-origin: top;
+  transition: transform 250ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.pathArrow {
+  position: absolute;
+  bottom: 4px;
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  color: #64748b;
+  background: #fafbfd;
+}
+
+.contextRow:has(:focus-visible)::before {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contextRow:hover::before {
+    opacity: 1;
+  }
+
+  .contextRow:hover .contextIcon {
+    transform: translateY(-2px) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroVisual,
+  .heroVisualFloat {
+    animation: none;
+  }
+
+  .heroVisual {
+    opacity: 1;
+    transform: none;
+  }
+
+  .contextIcon {
+    transition: none;
+  }
+
+  .trace {
+    transition: none;
+    transform: scaleY(1) !important;
+  }
+
+  .contextRow:hover .contextIcon {
+    transform: none;
+  }
+}

@@ -1,0 +1,131 @@
+.dialog {
+  width: min(1050px, calc(100vw - 32px));
+  height: min(720px, calc(100dvh - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 28px 90px rgb(2 6 23 / 0.3);
+}
+
+.dialog::backdrop {
+  background: rgb(2 6 23 / 0.78);
+  backdrop-filter: blur(3px);
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(290px, 36%) minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+}
+
+.intro {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  background: #0f172a;
+  color: #fff;
+}
+
+.introTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo {
+  width: 168px;
+  height: auto;
+  object-fit: contain;
+}
+
+.close {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.close:hover { background: rgb(255 255 255 / 0.12); }
+.close:active { transform: scale(0.96); }
+.close:focus-visible { outline: 2px solid #fb923c; outline-offset: 3px; }
+
+.title {
+  max-width: 8ch;
+  font-family: var(--font-anton), sans-serif;
+  font-size: clamp(44px, 5vw, 64px);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.description {
+  max-width: 29ch;
+  margin-top: 22px;
+  color: #cbd5e1;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.directContact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 22px;
+  border-top: 1px solid rgb(255 255 255 / 0.2);
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.directContact a {
+  width: fit-content;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.directContact a:focus-visible { outline: 2px solid #fb923c; outline-offset: 3px; }
+
+.formPane {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  background: #fff;
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 767px) {
+  .dialog {
+    width: calc(100vw - 20px);
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
+    overflow-y: auto;
+  }
+
+  .shell { display: block; height: auto; }
+  .intro { gap: 24px; padding: 22px 24px 26px; }
+  .logo { width: 144px; }
+  .close { width: 44px; height: 44px; flex-basis: 44px; }
+  .title { max-width: none; font-size: 40px; }
+  .description { max-width: 42ch; margin-top: 10px; font-size: 14px; line-height: 1.55; }
+  .directContact { display: none; }
+  .formPane { overflow: visible; }
+}

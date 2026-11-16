@@ -1,0 +1,284 @@
+/*
+  Dialog built on the native <dialog> element.
+
+  showModal() gives us the top layer, a real focus trap, inert page
+  content behind, and Escape handling from the platform. Hand-rolling
+  those is where custom modals usually go wrong, so we do not.
+
+  Motion follows the project's own vocabulary: cubic-bezier(0.23, 1,
+  0.32, 1), the curve used by the navbar, the footer links and every
+  editorial transition on the site.
+
+  Enter is 240ms, exit 180ms. Exit is faster than enter on purpose: the
+  user has already decided to leave, so lingering reads as lag.
+*/
+
+.dialog {
+  padding: 0;
+  border: 0;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+}
+
+.dialog::backdrop {
+  background: rgb(2 6 23 / 0.72);
+  opacity: 0;
+  transition: opacity 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  backdrop-filter: blur(3px);
+}
+
+.dialog[data-state="open"]::backdrop {
+  opacity: 1;
+}
+
+.dialog[data-state="closed"]::backdrop {
+  opacity: 0;
+  transition-duration: 180ms;
+}
+
+/* The scroll container. Full-bleed on phones, centred above that. */
+.viewport {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .viewport {
+    align-items: center;
+    padding: 32px 20px;
+  }
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #ffffff;
+  color: #0f172a;
+  border-top: 1px solid #e2e8f0;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -18px 60px rgb(2 6 23 / 0.28);
+
+  /*
+    Never scale(0). A panel that grows from nothing reads as a popup
+    rather than a surface arriving, and the text inside it is
+    unreadable for the first half of the animation.
+  */
+  opacity: 0;
+  transform: translate3d(0, 16px, 0) scale(0.985);
+  transition:
+    opacity 240ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@media (min-width: 640px) {
+  .panel {
+    max-width: 560px;
+    max-height: calc(100dvh - 64px);
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 24px 70px rgb(15 23 42 / 0.24);
+    transform: translate3d(0, 10px, 0) scale(0.985);
+  }
+}
+
+.panelWide {
+  composes: panel;
+}
+
+@media (min-width: 640px) {
+  .panelWide {
+    max-width: 680px;
+  }
+}
+
+.dialog[data-state="open"] .panel,
+.dialog[data-state="open"] .panelWide {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.dialog[data-state="closed"] .panel,
+.dialog[data-state="closed"] .panelWide {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.99);
+  transition-duration: 180ms;
+}
+
+/* Header is sticky so the close control stays reachable in a long form. */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 22px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+@media (min-width: 640px) {
+  .header {
+    padding: 26px 28px 18px;
+  }
+}
+
+.titleGroup {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ea580c;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+  text-transform: none;
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: 25px;
+  }
+}
+
+.description {
+  margin: 8px 0 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.adminPanel {
+  box-shadow: 0 16px 44px rgb(15 23 42 / 0.18);
+}
+
+.adminPanel .eyebrow {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.adminPanel .title {
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.adminPanel .description {
+  font-size: 14px;
+}
+
+.close {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #e2e8f0;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #475569;
+  cursor: pointer;
+  transition:
+    background-color 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    color 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Hover motion is gated: on touch, a tap fires a phantom hover first. */
+@media (hover: hover) and (pointer: fine) {
+  .close:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+}
+
+.close:active {
+  transform: scale(0.97);
+}
+
+.close:focus-visible {
+  outline: 2px solid #ea580c;
+  outline-offset: 2px;
+}
+
+@media (max-width: 639px) {
+  .close { width: 44px; height: 44px; }
+  .header { padding-top: max(22px, env(safe-area-inset-top)); }
+}
+
+.body {
+  padding: 22px;
+}
+
+@media (min-width: 640px) {
+  .body {
+    padding: 26px 28px 28px;
+  }
+}
+
+/* A small grab handle, so the sheet reads as dismissible on a phone. */
+.grabber {
+  display: block;
+  width: 38px;
+  height: 4px;
+  margin: 10px auto 0;
+  border-radius: 999px;
+  background: #cbd5e1;
+}
+
+@media (min-width: 640px) {
+  .grabber {
+    display: none;
+  }
+}
+
+/*
+  Reduced motion keeps the dialog instant rather than removing it.
+  Opacity is retained; only displacement and scale are dropped, which is
+  what actually causes discomfort.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .dialog::backdrop,
+  .panel,
+  .panelWide {
+    transition-duration: 120ms !important;
+  }
+
+  .panel,
+  .panelWide,
+  .dialog[data-state="closed"] .panel,
+  .dialog[data-state="closed"] .panelWide {
+    transform: none !important;
+  }
+}
